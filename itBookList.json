@@ -1,0 +1,86 @@
+{
+    "total":"2396",
+    "page":"1",
+    "books":[
+       {
+          "title":"Web Scraping with Python, 2nd Edition",
+          "subtitle":"Collecting More Data from the Modern Web",
+          "isbn13":"9781491985571",
+          "price":"$35.87",
+          "image":"https://itbook.store/img/books/9781491985571.png",
+          "link":"https://itbook.store/books/9781491985571"
+       },
+       {
+          "title":"Web Application Security",
+          "subtitle":"Exploitation and Countermeasures for Modern Web Applications",
+          "isbn13":"9781492053118",
+          "price":"$24.99",
+          "image":"https://itbook.store/img/books/9781492053118.png",
+          "link":"https://itbook.store/books/9781492053118"
+       },
+       {
+          "title":"The Modern Web",
+          "subtitle":"Multi-Device Web Development with HTML5, CSS3, and JavaScript",
+          "isbn13":"9781593274870",
+          "price":"$20.99",
+          "image":"https://itbook.store/img/books/9781593274870.png",
+          "link":"https://itbook.store/books/9781593274870"
+       },
+       {
+          "title":"Functional Web Development with Elixir, OTP, and Phoenix",
+          "subtitle":"Rethink the Modern Web App",
+          "isbn13":"9781680502435",
+          "price":"$18.99",
+          "image":"https://itbook.store/img/books/9781680502435.png",
+          "link":"https://itbook.store/books/9781680502435"
+       },
+       {
+          "title":"Web Design Blueprints",
+          "subtitle":"Build websites and applications using the latest techniques in modern web development",
+          "isbn13":"9781783552115",
+          "price":"$29.99",
+          "image":"https://itbook.store/img/books/9781783552115.png",
+          "link":"https://itbook.store/books/9781783552115"
+       },
+       {
+          "title":"Full-Stack Web Development with Vue.js and Node",
+          "subtitle":"Build scalable and powerful web apps with modern web stack: MongoDB, Vue, Node.js, and Express",
+          "isbn13":"9781788831147",
+          "price":"$35.99",
+          "image":"https://itbook.store/img/books/9781788831147.png",
+          "link":"https://itbook.store/books/9781788831147"
+       },
+       {
+          "title":"JavaScript Frameworks for Modern Web Dev",
+          "subtitle":"",
+          "isbn13":"9781484206638",
+          "price":"$22.39",
+          "image":"https://itbook.store/img/books/9781484206638.png",
+          "link":"https://itbook.store/books/9781484206638"
+       },
+       {
+          "title":"JavaScript Frameworks for Modern Web Development",
+          "subtitle":"The Essential Frameworks, Libraries, and Tools to Learn Right Now",
+          "isbn13":"9781484249949",
+          "price":"$36.09",
+          "image":"https://itbook.store/img/books/9781484249949.png",
+          "link":"https://itbook.store/books/9781484249949"
+       },
+       {
+          "title":"Getting Started with Meteor.js JavaScript Framework",
+          "subtitle":"Develop modern web applications in Meteor, one of the hottest new JavaScript platforms",
+          "isbn13":"9781782160823",
+          "price":"$9.99",
+          "image":"https://itbook.store/img/books/9781782160823.png",
+          "link":"https://itbook.store/books/9781782160823"
+       },
+       {
+          "title":"Mastering React",
+          "subtitle":"Master the art of building modern web applications using React",
+          "isbn13":"9781783558568",
+          "price":"$44.99",
+          "image":"https://itbook.store/img/books/9781783558568.png",
+          "link":"https://itbook.store/books/9781783558568"
+       }
+    ]
+ }
