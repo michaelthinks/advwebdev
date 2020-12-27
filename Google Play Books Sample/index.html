@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Milestone 4</title>
+        
+        <style>
+                /*
+                Styles for the Milestone 4
+                */
+
+                .bookThumbnail {
+                    margin-top: 5px;
+                    float: left;
+                }
+
+                .bookInfo {
+                    margin-left: 140px;
+					margin-bottom: 55px;
+                    padding: 10px;
+                    background-color: floralwhite;
+                    border: 2px solid black;
+                    border-radius: 10px;
+                }
+
+                #title {
+                    text-align: center;
+                    font-size: 2em;
+                    font-weight: bolder;
+                    font-family: sans-serif;
+                }
+
+                .nav {
+                    text-align: center;
+                    font-family: sans-serif;
+                    padding-top: 15px;
+					padding-bottom: 15px;
+                    background-color: darkkhaki;
+					color: oldlace;
+                    border: 0.25px solid black;
+					border-radius: 10px;
+					margin-left: 300px;
+					margin-right: 300px;
+					margin-top: 20px;
+					margin-bottom: 20px;
+                }
+				
+
+                hr {
+                    border: 0.25px solid black;
+
+                }
+
+                .body {
+                    margin-left: 200px;
+                    margin-right: 200px;
+                
+                }
+				
+				.bodyGridView {
+					display:flex;
+                    margin-left: 200px;
+                    margin-right: 200px;
+                }
+
+                .bookTitle {
+                    font-size: large;
+                    font-weight: bold;
+                    text-align: center;
+                }
+
+                .bookSubtitle {
+                    font-style: italic;
+                    text-align: center;
+                }
+
+                .bookDescription {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                }
+
+                #bookInfoSingleItem {
+                    margin-left: 325px;
+                    padding: 10px;
+                    background-color:floralwhite;
+                    border: 2px solid black;
+                    border-radius: 10px;
+                }
+				
+				.hideByDefault {
+					display: none;
+				}
+				
+				.errorResult {
+					text-align: center;
+					font-size: 20;
+					font-weight: bold;
+				}
+				
+				.goToPageContent {
+					text-align: center;
+                    margin-top: 15px;
+					margin-bottom: 15px;
+				}
+                
+                a:link {
+                    text-decoration: none;
+                    color: darkolivegreen;
+					font-weight: bold;
+                }
+				
+				.pageButton {
+					margin: 5px;
+					border: 1px solid black;
+					border-radius: 5px;
+					background-color: floralwhite;
+					cursor: pointer;
+				}
+				
+				#selected {
+					font-weight: bold;
+					border: 2px solid black;
+				}
+
+				#loadMore {
+					text-align: center;
+				}
+
+				#loadMoreButton {
+					margin: 5px;
+					border: 2px solid black;
+					border-radius: 5px;
+					background-color: floralwhite;
+					cursor: pointer;
+					font-weight: bold;
+				}
+				
+				#closeResearchButton {
+					margin: 5px;
+					border: 2px solid black;
+					border-radius: 5px;
+					background-color: floralwhite;
+					cursor: pointer;
+					font-size-adjust: 1.2;
+					font-weight: bold;
+				}
+				
+				.overlay {
+					position: fixed;
+					display: none;
+					width: auto;
+					height: auto;
+					margin: 100px;
+					padding: 10px;
+					border-radius: 10px;
+					overflow-y: scroll;
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					background-color: rgba(0,0,0,0.5);
+					z-index: 2;
+					cursor: pointer;
+					-ms-overflow-style: none;  /* IE and Edge */
+					scrollbar-width: none;  /* Firefox */
+					
+				}
+				
+				.overlay::-webkit-scrollbar {
+				  display: none;
+				}
+				
+				.gridView {
+					display: flex;
+					flex-wrap: wrap;
+				}
+				
+				.gridViewItem {
+					
+					width: 130px;
+					margin: 10px;
+					padding: 10px;
+					background-color: wheat;
+                    border: 2px solid black;
+                    border-radius: 10px;
+				}
+				
+				.bookInfoGrid {
+					display: block;
+					padding-top: 30px;
+					text-align: center;
+				}
+				
+				#backButton {
+					text-align: center;
+				}
+				
+				#searchButton {
+					margin: 5px;
+					border: 2px solid black;
+					border-radius: 5px;
+					background-color: floralwhite;
+					cursor: pointer;
+					font-weight: bold;
+				}
+				
+				#gridViewButton {
+					margin: 5px;
+					border: 2px solid black;
+					border-radius: 5px;
+					background-color: floralwhite;
+					cursor: pointer;
+					font-weight: bold;
+				}
+				
+				#listViewButton {
+					margin: 5px;
+					border: 2px solid black;
+					border-radius: 5px;
+					background-color: floralwhite;
+					cursor: pointer;
+					font-weight: bold;
+				}
+        </style>
+
+		<!-- Mustache.js Templates -->
+		
+		<!-- Template for render a single Google Book item (the detail view when an item is clicked on in the book list -->
+		<script id="googleBookItem" type="text/template">
+			{{#volumeInfo}}
+			
+			<div class='bookItem' id='book'>
+
+			<!-- Display thumbnail -->
+			<span class='bookThumbnail'><a href='{{infoLink}}'>
+			
+			<!-- Change small to medium, thumbnail, etc. to display different image sizes -->
+			{{#imageLinks}}
+				<img src='{{#imageLinks}}{{small}}{{/imageLinks}}' alt='{{title}}' />
+			{{/imageLinks}}
+			{{^imageLinks}}
+				No Image Available
+			{{/imageLinks}}
+			
+			</a></span>
+			
+			<!-- Create an element to hold all book info and put the info inside of it -->
+			<div id='bookInfoSingleItem'>
+			<div class='bookTitle'>{{title}}</div>
+			<div class='bookSubtitle'>{{#subtitle}}{{subtitle}}{{/subtitle}}</div><br />
+			<span class='bookDescriptionLong'>{{{description}}}</span><br /><br />
+			<span class='bookAuthor'>Author(s):{{authors}}</span><br />
+			<span class='bookPublisher'>Publisher:{{publisher}}</span><br />
+			<span class='bookPublishDate'>Date Published: {{publishedDate}}</span><br />
+			<span class='bookPageCount'>Page Count: {{pageCount}}</span><br /><br />
+			<span class='bookInfoLink'><a href='{{infoLink}}'>More Information At Google Play Books</a></span><br />               
+			</div>
+
+			</div><br />
+			{{/volumeInfo}}
+		</script>
+		
+		<script id="bookListItem" type="text/template">
+			{{#volumeInfo}}
+			<div id='bookItem' class='bookItem'>
+
+			<!-- Display thumbnail -->
+			<span class='bookThumbnail'><a href='#' onclick='$(".overlay").empty(); googleBookItem("{{id}}", $("#searchQuery").val())'>
+			{{#imageLinks}}
+				<img src='{{#imageLinks}}{{thumbnail}}{{/imageLinks}}' alt='{{title}}' />
+			{{/imageLinks}}
+			{{^imageLinks}}
+				No Image Available
+			{{/imageLinks}}
+			
+			</a></span>
+			
+			<!-- Create an element to hold all book info and put the info inside of it -->
+			<div class='bookInfo'>
+			<span class='bookTitle'>{{title}}<br /></span>
+
+			<!-- Check to see if there is a subtitle (some items do not have one) - if there isn't, insert a line break, if there is, insert it -->
+			{{#subtitle}}
+				<span class='bookSubtitle'>{{subtitle}}<br /><br /></span>
+			{{/subtitle}}
+			{{^subtitle}}
+				<span class='bookSubtitle'><br /></span>
+			{{/subtitle}}
+			
+			{{#description}}
+				<span class='bookDescription'>{{{description}}}<br /></span>
+			{{/description}}
+			{{^description}}
+				<span class='bookDescription'>No Description Provided<br /><br /></span>
+			{{/description}}
+			
+			<span class='bookAuthor'>Author(s):{{authors}}<br /><br /></span>
+			<!-- Normally we would assign an event to this button in the normal way (as done below with the prev, next, and search buttons. However, doing so would not 
+			 allow us to easily pass the book ID that is needed to determine which book was clicked. Therefore, we need to use the old-school onclick HTML attribute 
+			 to call the appropriate JS function and pass the book ID to it. -->
+			<span class='bookInfoLink'><a href='#' onclick='$(".overlay").empty(); googleBookItem("{{id}}", $("#searchQuery").val())'>Book Details</a><br /> </span>             
+			</div>
+
+			</div><br />
+			{{/volumeInfo}}
+		</script>
+		
+		<script id="bookGridItem" type="text/template">
+			{{#volumeInfo}}
+			<div id='bookItem' class='gridViewItem'>
+
+			<!-- Display thumbnail -->
+			<span class='bookThumbnail'><a href='#' onclick='googleBookItem("{{id}}", $("#searchQuery").val())'>
+			{{#imageLinks}}
+				<img src='{{#imageLinks}}{{thumbnail}}{{/imageLinks}}' alt='{{title}}' />
+			{{/imageLinks}}
+			{{^imageLinks}}
+				No Image Available
+			{{/imageLinks}}
+			
+			</a></span>
+			
+			<!-- Create an element to hold all book info and put the info inside of it -->
+			<div class='bookInfoGrid'>
+			<span class='bookTitle'>{{title}}</span><br />
+
+			<!-- Check to see if there is a subtitle (some items do not have one) - if there isn't, insert a line break, if there is, insert it -->
+			{{#subtitle}}
+				<span class='bookSubtitle' style="display: none">{{subtitle}}<br /><br /></span>
+			{{/subtitle}}
+			{{^subtitle}}
+				<span class='bookSubtitle' style="display: none"><br /></span>
+			{{/subtitle}}
+			
+			{{#description}}
+				<span class='bookDescription' style="display: none">{{{description}}}<br /></span>
+			{{/description}}
+			{{^description}}
+				<span class='bookDescription' style="display: none">No Description Provided<br /><br /></span>
+			{{/description}}
+			
+			<span class='bookAuthor' style="display: none;">Author(s):{{authors}}<br /><br /></span>
+			<!-- Normally we would assign an event to this button in the normal way (as done below with the prev, next, and search buttons. However, doing so would not 
+			 allow us to easily pass the book ID that is needed to determine which book was clicked. Therefore, we need to use the old-school onclick HTML attribute 
+			 to call the appropriate JS function and pass the book ID to it. -->
+			<span class='bookInfoLink' style="display: none;"><a href='#' onclick='googleBookItem("{{id}}", $("#searchQuery").val())'>Book Details</a><br /></span>            
+			</div>
+
+			</div><br />
+			{{/volumeInfo}}
+		</script>
+		
+		<!-- End Templates -->
+		
+		<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/4.0.1/mustache.min.js"></script>
+		
+		
+        <script>
+			// Global variables
+			// Index variable for implementing the Load More books feature
+			// After experimenting with different "Load More" techniques, I found the easiest and most simple way to implement it 
+			// is via a global index variable. Passing an index and incrementing it between functions became overly complicated and hard 
+			// to follow, thus a global variable was implemented instead
+			var globalIndex;
+			
+			// Variable to determine whether or not we are in grid view - used when load more is called to set the correct CSS classes
+			var inGridView;
+		
+            // Begin intial page load - this will only execute when the page is first rendered (or the user refreshes the page)
+            $('document').ready(function() {
+				// Call googleBookList() to load the initial page
+				getBookList();
+            });
+
+
+			// This function renders a single Google Books item - it was separated into a separate function in order
+            // to easily allow for a SPA to be built in the future. Milestone 1 called for 4 separate pages 
+            // so I separated each task into 4 separate pages instead of a single page.
+            function googleBookItem(bookId, query, index, items) {
+                $('document').ready(function() {
+					// Build the correct API call
+					// Retrieve the book parameter from the URL and format it correctly (remove special characters from the beginning and the end)
+                    var googleBookItem = 'https://www.googleapis.com/books/v1/volumes/' + bookId;
+				
+					// Set the navigation are - use navHtml as a buffer
+					var overlayHtml = "";
+					overlayHtml += "<div id='loadMore'><br /><button id='closeResearchButton'>Close</button></div><br /><br />"
+					
+					// Append HTML to overlay div
+					$('.overlay').append(overlayHtml);
+					
+
+					// Iterate through each item in the list and render it - since this is a single item, it only runs once
+					$.getJSON(googleBookItem, function(data) {
+						// Render Mustache Template for a Google Book item
+						var template = $('#googleBookItem').html();
+						var html = Mustache.render(template, data);
+						$('.overlay').append(html);
+					});
+
+
+					// Show the overlay
+					$('.overlay').show();
+					
+					// Assign event to the close button
+					// This clears the overlay div and sets display to none
+					$('#closeResearchButton').off('click').on('click', function() {
+						$('.overlay').empty();
+						$('.overlay').hide();
+					});
+					
+                });
+				
+
+
+		   
+				
+            }
+
+
+            // This function renders a Google Book List - it was separated into a separate function in order
+            // to easily allow for a SPA to be built in the future. Milestone 1 called for 4 separate pages 
+            // so I separated each task into 4 separate pages instead of a single page.
+            function getBookList(bookQuery, numItems, preserveIndex) {			
+                $('document').ready(function() {
+					// Check to see if numItems exists, if it does that means the user is returning to the page from book details, so don't reset the globalIndex
+					if (!numItems) {
+						// Set the global index to 0 for the new page load
+						globalIndex = 0;
+					}
+					
+					if (inGridView) {
+						// Do nothing and stay in grid view and the grid flag has been purposefully set to true
+					}
+					else {
+						// Set grid view flag to false since we load the list view by default
+						inGridView = false;
+					}
+					
+					// Clear the page for the new search to begin
+					$('.nav').empty();
+					$('.body').empty();
+					$("#loadMore").empty();
+					
+                    // If no query is passed, set a default query, which will be Modern Web
+                    if (bookQuery == null || bookQuery == "" || bookQuery === "") {
+                        bookQuery = "Modern Web";
+                    }
+
+                    // Store the query string
+                    var query = bookQuery;
+
+                    // Check string for any bad characters and replace them with blanks
+                    query = query.replace("=", "");
+                    query = query.replace("*", "");
+                    query = query.replace("?", "");
+                    query = query.replace("'", "");
+                    query = query.replace('"', "");
+
+                    // Set the navigation are - use navHtml as a buffer
+                    var navHtml = "";
+                    navHtml += "<div id='title'>Milestone 4</div><br />";
+                    navHtml += "<a href='../index.html'>Project Home</a><br />";
+                    navHtml += "<a href='#' id='bookShelfLink'>Editor Recommendations</a>";
+                    navHtml += "<br /><br />"
+                    navHtml += "<input type='text' id='searchQuery' size='25' onfocus=\"this.value=''\" value='" + query + "'><br /><button id='searchButton'>Search Books</button><br /><br />"
+					navHtml += "<button id='gridViewButton'>Grid View</button><button style='display: none;' id='listViewButton'>List View</button><br />";
+					
+					// Add navHtml buffer to the navigator container on the page
+					// We must begin this process outside of $.getJSON below, otherwise the dynamic show/hide jQuery functions will not work properly
+					$('.nav').append(navHtml);
+					
+					// Start div container for the book list - this is only used when switching to gridview
+					$('.body').append('<div id="gridViewContainer">');
+					
+					// Check to see if number of items was passed - this is used by the goback button to reload the correct amount of books when the user goes back 
+					// to the book list
+					if (numItems) {
+						loadBooks(query, numItems, preserveIndex);
+					}
+					else {
+						// Call loadBooks to load the book list
+						loadBooks(query);
+					}
+					
+					// End div container for the book list - this is only used when switching to gridview
+					$('.body').append('</div>');
+
+					// Add the Load More button to the bottom of the search results
+					$('#loadMore').append('<button id="loadMoreButton">Load More</button><br /><br />');
+
+					// Check to see if we are in grid view
+					// If so, adjust the view buttons accordingly (if this doesn't happen, the wrong button will appear when returning from book details to grid view)
+					if (inGridView) {
+						// Toggle the view buttons
+						$('#listViewButton').show();
+						$('#gridViewButton').hide();
+					}
+
+					// Assign event to the Load More button
+					$('#loadMoreButton').on('click', function() {
+						loadBooks(query, preserveIndex);
+					});
+
+					// Assign event to search button
+                    $('#searchButton').on('click', function() {
+                        getBookList($('#searchQuery').val());
+
+                    });
+					
+					// Assign an event handler to the Google Shelf Button button
+					$('.nav').off('click', '#bookShelfLink').on('click', '#bookShelfLink', function() {
+						getBookShelf();
+					});
+					
+					// Assign an event handler to the grid view button
+					$('.nav').off('click', '#gridViewButton').on('click', '#gridViewButton', function() {
+
+						showGridView();
+					});
+					
+					// Assign an event handler to the grid view button
+					$('.nav').off('click', '#listViewButton').on('click', '#listViewButton', function() {
+						showListView();
+					});
+                });
+				
+            }
+			
+			function showGridView() {
+				// Add class to grid view container
+				$('#gridViewContainer').addClass('gridView');
+				
+				// Change list elements to grid elements
+				$('.bookItem').addClass('gridViewItem').removeClass('bookItem');
+				
+				// Change book info elements to grid elements
+				$('.bookInfo').addClass('bookInfoGrid').removeClass('bookInfo');
+				
+				// Hide specific book details to make everything fit nicely in a grid
+				$('.bookSubtitle').hide();
+				$('.bookDescription').hide();
+				$('.bookAuthor').hide();
+				$('.bookInfoLink').hide();
+				
+				$('.body').css('display', 'flex');
+				$('.body').css('flex-wrap', 'wrap');
+				
+				// Toggle the view buttons
+				$('#listViewButton').show();
+				$('#gridViewButton').hide();
+				
+				// Set grid view flag to true
+				inGridView = true;
+				
+			}
+			
+			function showListView() {
+				// Remove class from grid view container
+				$('#gridViewContainer').removeClass('gridView');
+				
+				// Change grid elements to list elements
+				$('.gridViewItem').addClass('bookItem').removeClass('gridViewItem');
+				
+				// Change book info grid elements to list elements
+				$('.bookInfoGrid').addClass('bookInfo').removeClass('bookInfoGrid');
+				
+				// Show specific book details hidden in grid view
+				$('.bookSubtitle').show();
+				$('.bookDescription').show();
+				$('.bookAuthor').show();
+				$('.bookInfoLink').show();
+				
+				$('.body').css('display', 'block');
+				
+				// Toggle the view buttons
+				$('#listViewButton').hide();
+				$('#gridViewButton').show();
+				
+				// Set grid view flag to false
+				inGridView = false;
+			}
+			
+			function loadBooks(bookQuery, numItems, preserveIndex) {
+				// Check to make sure globalIndex is initialized
+				// It should have been intialized in getBookList, but this is a precaution
+				if (globalIndex === undefined) {
+					globalIndex = 0;
+				}
+			
+				// This holds our JSON data source
+				var googleBookList = 'https://www.googleapis.com/books/v1/volumes?q=' + bookQuery;
+				
+				// Check for numItems, if it exists, we are returning to the book list - don't add a startIndex or else 
+				// all of the previous items will not load
+				if (!numItems) {
+					// Check to see if we have an global index to start with - if we do, add it to the query
+					if (globalIndex >= 5) {
+						googleBookList += "&startIndex=" + globalIndex;
+					}
+				}
+				
+				// Check numItems, if exists, assign it to maxResults
+				if (numItems) {
+					googleBookList += "&maxResults=" + numItems;
+				}
+				else {
+					// Set max results at 5 - each time the user clicks Load More it will load 5 results
+					// Modify this line to load however many results you want per click
+					googleBookList += "&maxResults=5";
+				}
+				
+				// Load our JSON and begin rendering each item
+				$.getJSON(googleBookList, function(data) {
+				
+					// ------Begin building the body of the page with main content------
+						
+					// Check to see if there are items - if there aren't display a message-box
+					if (data['totalItems'] === 0) {							
+						// Add HTML buffer to the page
+						$('.body').append("<div class='errorResult'>Your search did not return any results.</div>");
+					}
+					else {	
+						// For each item (book) in our JSON source, render the item
+						$.each(data.items, function(key, value) {
+							// Check if we are in grid view, if so, use the grid view template
+							if (inGridView) {
+								// Render Mustache Template for a Google Book item
+								var template = $('#bookGridItem').html();
+								var html = Mustache.render(template, this);
+								$('.body').append(html);								
+							}
+							else {
+								// Render Mustache Template for a Google Book item
+								var template = $('#bookListItem').html();
+								var html = Mustache.render(template, this);
+								$('.body').append(html);
+							}
+						});
+					}
+				});
+				
+				// Check to see if preserveIndex is true - if so, don't change the globalIndex
+				if (preserveIndex) {
+					// Do Nothing since we want to preserve our current index
+				}
+				else {
+					// Increment the global index by 6 for the first loadMore initiation, 4 by the second, and 5 for any further loadMore intiations.
+					// This is due to the way the Google Books API was returning books. Simply passing 5 to startIndex would load the first 5 books again,
+					// incrementing by 6 would load the next 5 books, but subsequently incrementing by 6 would skip books. Incrementing by 4 would load the next 
+					// 5 books properly, but would start producing duplicates. The best method for properly loading the books in order ended up being passing a 
+					// startIndex of 6 on the for loadMore, 10 for the second loadMore, and incrementing by 5 for any subsequent loadMore calls. This is confusing, 
+					// but it was necessary due to how the Google Books API was responding to API calls.
+					if (globalIndex == 0) {
+						globalIndex = 6
+					}
+					else if (globalIndex == 6) {
+						globalIndex += 4;
+					}
+					else {
+						globalIndex += 5;
+					}
+				}
+				
+				// Assign event to the Load More button with an updated index
+				// Event must be set to off first to avoid multiple events being triggered by 1 click
+				$('#loadMoreButton').off('click').on('click', function() {
+					loadBooks(bookQuery);
+				});
+				
+			}
+
+			// This function clears data from the page
+			function clearPage() {
+				$('.nav').empty();
+				$('.body').empty();
+			}
+			
+			// This function will retrieve and render the Google Book Shelf
+			function getBookShelf() {
+			
+                $('document').ready(function() {
+                
+
+                    // This holds our JSON data source
+                    var googleBookList = 'https://www.googleapis.com/books/v1/users/117595622856274018466/bookshelves/0/volumes';
+
+                    // Set the navigation are - use navHtml as a buffer
+                    var overlayHtml = "";
+                    overlayHtml += "<br /><div class='nav' id='title'>Recommendations</div>";
+                    overlayHtml += "<div id='loadMore'><button id='closeResearchButton'>Close</button></div><br /><br />"
+					
+					// Append HTML to overlay div
+					$('.overlay').append(overlayHtml);
+					
+
+                    // Load our JSON and begin rendering each item
+                    $.getJSON(googleBookList, function(data) {
+						
+
+						// ------Begin building the body of the page with main content------
+                        // For each item (book) in our JSON source, render the item
+                        $.each(data.items, function(key, value) {
+
+							// Render Mustache Template for a Google Book item
+							var template = $('#bookListItem').html();
+							var html = Mustache.render(template, this);
+							$('.overlay').append(html);
+                        });
+                    });
+					
+					// Show the overlay
+					$('.overlay').show();
+					
+					// Assign event to the close button
+					// This clears the overlay div and sets display to none
+					$('#closeResearchButton').off('click').on('click', function() {
+						$('.overlay').empty();
+						$('.overlay').hide();
+					});
+               });
+			   	
+
+            }
+			
+        </script>
+    </head>
+    <body>
+        <!-- Navigation container for the nav links -->
+        <div class="nav">
+            
+        </div>
+
+
+        <!-- Main Book List Container - jQuery will populate this on page load -->
+        <div class="body">
+
+        </div>
+		
+		<!-- Overlay container for displaying an overlay book list -->
+		<div class="overlay">
+		
+		</div>
+		
+		<!-- This is used to display the load more button at the bottom of the page when viewing the book list -->
+		<div id="loadMore">
+		
+		</div>
+    </body>
+</html>
